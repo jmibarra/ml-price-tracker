@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 #URL del producto
 URL = 'https://www.mercadolibre.com.ar/toyco-juego-de-la-vida-life/p/MLA15904269'
+TARGET_PRICE = 39901.00  # Precio objetivo
 
 # Cabeceras para imitar un navegador real
 HEADERS = {
@@ -23,6 +24,11 @@ def get_product_price(url):
 
     return title, price
 
+def check_price(title, price):
+    if price < TARGET_PRICE:
+        print(f"¡El precio del producto '{title}' ha bajado a ${price}!")
+    else:
+        print(f"El precio sigue alto (${price}).")
+
 title, price = get_product_price(URL)
-print(f"Título: {title}")
-print(f"Precio: ${price}")
+check_price(title, price)
