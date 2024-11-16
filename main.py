@@ -1,9 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
+from email_service import EmailService
 
 #URL del producto
 URL = 'https://www.mercadolibre.com.ar/toyco-juego-de-la-vida-life/p/MLA15904269'
 TARGET_PRICE = 39901.00  # Precio objetivo
+
+# Crea una instancia del servicio de correo
+email_service = EmailService(email=EMAIL, password=PASSWORD)
 
 # Cabeceras para imitar un navegador real
 HEADERS = {
@@ -26,9 +30,8 @@ def get_product_price(url):
 
 def check_price(title, price):
     if price < TARGET_PRICE:
-        print(f"¡El precio del producto '{title}' ha bajado a ${price}!")
-    else:
-        print(f"El precio sigue alto (${price}).")
+        body = f"¡El precio del producto '{title}' ha bajado a ${price}!\nLink: {URL}"
+        email_service.send_email("¡Alerta de precio bajo!", body, recipient_email=EMAIL)
 
 title, price = get_product_price(URL)
 check_price(title, price)
